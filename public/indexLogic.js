@@ -15,7 +15,7 @@ function gameJoinProcess(playerName){
 sessionStorage.setItem("playerName", playerName);
 // Retrieve
 //document.getElementById("result").innerHTML = sessionStorage.getItem("lastname"); 
-window.location.href= "http://localhost:3000/gameRoom.html";
+window.location.href= "https://achtung.herokuapp.com/gameRoom.html";//http://localhost:3000/gameRoom.html
     
 }
 function nameCheck(){                                               // check if playername is has more than 4 letters
