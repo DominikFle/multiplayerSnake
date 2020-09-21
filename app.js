@@ -7,7 +7,7 @@ const express = require("express");
 
 const app = express();
 const hostname = '0.0.0.0'; //const hostname = "127.0.0.1";https://achtung.herokuapp.com/
-const port = "process.env.PORT || 80";   //3000
+const port = process.env.PORT || 80;   //3000
 
 
 app.use(express.static(__dirname + '/public'));  //öffentlichen Zugang zu Ordner erlauben
