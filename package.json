@@ -1,0 +1,20 @@
+{
+  "name": "multigame",
+  "version": "1.0.0",
+  "description": "AchtungDie KurveGame",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "formidable": "^1.2.2",
+    "socket.io": "^2.3.0",
+    "url": "^0.11.0",
+    "util": "^0.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
