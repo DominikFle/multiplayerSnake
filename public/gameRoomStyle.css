@@ -1,0 +1,68 @@
+
+
+body { padding: 0; margin: 0; }
+div {margin:0;}
+
+#mainCanvas{
+    background-color: grey;
+}
+#playerReadyButton{
+    display:none;
+}
+.countDown{
+    display:none;
+    font-family: sans-serif;
+    text-align: right;
+    font-size: 3rem;
+    color:orangered;
+
+    position:absolute;
+    top:0;
+    
+    right:0;
+    margin-right:10%;
+    margin-top:10%;
+}
+#reJoinCountDown{
+    display:none;
+}
+#resumeCountdown{
+    color:green;
+}
+#winner{
+    display:none;
+}
+.canvasOverlayed{
+   
+    position: absolute;
+    top:0;
+    left:0;
+}
+#canvasContainer{
+    position: relative;
+    display:flex;
+}
+#mobileControl{
+    position: relative;
+}
+#leftControl{
+    position:absolute;
+    left:0;
+    top:0;
+}
+#rightControl{
+    position:absolute;
+    right:0;
+    top:0;
+}
+.controlButton{
+    background-color: orangered;
+}
+.controlButton:hover{
+    background-color: red;
+}
+@media only screen and (min-width: 600px) {
+    #mobileControl{
+       display:none;
+    }
+}

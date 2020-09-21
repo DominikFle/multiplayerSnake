@@ -1,0 +1,53 @@
+<html lang="de">
+
+<head>
+
+ 
+    <title> MultiPlayer Game </title>
+    <meta charset="utf-8" />
+    <link href="gameRoomStyle.css" type="text/css" rel="stylesheet">
+
+
+    
+   <!-- <script type="text/javascript" src="/ajaxClient.js"></script>-->
+</head>
+
+<body>
+    <p id="player1">Test</p>
+    <p id="player2">Test</p>
+    <p id="room">Test</p>
+    <h1 id ="winner"> Winner: <span id=winnerName></span>   </h1>
+    <div class="countDown" id="countDown">
+        <p >3</p>
+    </div>
+    <div class="countDown" id="reJoinCountDown">
+        <p >10</p>
+    </div>
+    <div class="countDown" id="resumeCountdown">
+        <p >3</p>
+    </div>
+    
+    <button id="playerReadyButton">Ready to start the game</button>
+    <div id="canvasContainer">
+        <canvas class="canvas" id="mainCanvas"></canvas>
+        <canvas class="canvasOverlayed canvas" id="animCanvas1"></canvas>
+        <canvas class="canvasOverlayed canvas" id="animCanvas2"></canvas>
+    </div>
+    <div id="mobileControl">
+        <div class="controlButton" id="leftControl">
+            <p>Left</p>
+        </div>
+        <div class="controlButton" id="rightControl">
+            <p>Right</p>
+        </div>
+    </div>
+    
+    
+    
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/gameClient.js"></script>
+
+</body>
+
+</html>
