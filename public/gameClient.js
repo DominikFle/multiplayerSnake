@@ -1,6 +1,10 @@
 //---------------------------------Event Listener-----------------------------------
-
-
+var indexLink="http://localhost:3000/gameRoom.html"
+document.addEventListener("load",()=>{
+    if(!sessionStorage.getItem("playerName")){
+        window.location.href= indexLink; //heroku
+    }
+});
 
 document.getElementById("playerReadyButton").addEventListener("click",playerIsReady);
 document.getElementById("leftControl").addEventListener("mousedown",()=>{   // emulate left arrow  mousedown = touchstart
@@ -68,7 +72,7 @@ function smallestWindowSide(){
 var canvasSide;
 if(smallestWindowSide()>1000/0.8){
     canvasSide=1000;               // big desktop
-}else if(smallestWindowSide>500){
+}else if(smallestWindowSide()>500){
     canvasSide=0.8*smallestWindowSide();// smaller screens
 }else{
     canvasSide=smallestWindowSide(); // mobile ... use full width
@@ -90,7 +94,7 @@ animCanvas2.height = canvasSide;
 
 animCtx2.lineCap="round";
 
-
+let root = document.documentElement; // for variable css styles
 //----------------------------Player Details--------------------------------
 var playerName ="";
 var yourRoom;
@@ -129,25 +133,31 @@ function startCountDown(){
 var socket = io();
 
 socket.on("connect",()=>{
-    playerName = sessionStorage.getItem("playerName");
-   // document.getElementById("selfPlayer").innerHTML = "Player name: "+sessionStorage.getItem("playerName")+
-    //"  PlayerID: "+ socket.id;                           // get the session storage player Info
-
-
-    //if no reconnect sessionStorage.setItem("socketID",socket.id);           // set socketID
-    var oldSocketID;
-    if(sessionStorage.getItem("socketID")){
-        oldSocketID= sessionStorage.getItem("socketID");
-    }
-    var playerInfo=
-    {
-        playerName:playerName,
-        oldSocketID:oldSocketID
-    }
     
-    sessionStorage.setItem("socketID",socket.id);  // override old socketID
+    playerName = sessionStorage.getItem("playerName");
+    if(playerName){ // nur wenn name angegeben darf man connecten
+        // document.getElementById("selfPlayer").innerHTML = "Player name: "+sessionStorage.getItem("playerName")+
+        //"  PlayerID: "+ socket.id;                           // get the session storage player Info
 
-    socket.emit("playerJoinRequest",JSON.stringify(playerInfo));            // emit gameRoom request
+
+        //if no reconnect sessionStorage.setItem("socketID",socket.id);           // set socketID
+        var oldSocketID;
+        if(sessionStorage.getItem("socketID")){
+            oldSocketID= sessionStorage.getItem("socketID");
+        }
+        var playerInfo=
+        {
+            playerName:playerName,
+            oldSocketID:oldSocketID
+        }
+        
+        sessionStorage.setItem("socketID",socket.id);  // override old socketID
+
+        socket.emit("playerJoinRequest",JSON.stringify(playerInfo));            // emit gameRoom request
+    }else{
+        window.location.href= indexLink;
+    }
+   
 })
 
 function setRoomInfo (yourRoom){
@@ -157,39 +167,55 @@ function setRoomInfo (yourRoom){
         if(yourRoom.player1.isReady){
             
             statusP1="Is Ready";
+            document.getElementById("p1Ready").style.display="inline-block";   // change visibility of ready and not ready signs
+            document.getElementById("p1NotReady").style.display="none";
         }else{
             statusP1="Is Not Ready";
+            document.getElementById("p1Ready").style.display="none";   // change visibility of ready and not ready signs
+            document.getElementById("p1NotReady").style.display="inline-block";
         }
     }else{
         statusP1="Is Not Ready";
+        document.getElementById("p1Ready").style.display="none";   // change visibility of ready and not ready signs
+        document.getElementById("p1NotReady").style.display="inline-block";
     }
     
     if(yourRoom.player2){
         var statusP2;
         if(yourRoom.player2.isReady){
             statusP2="Is Ready";
+            document.getElementById("p2Ready").style.display="inline-block";   // change visibility of ready and not ready signs
+        document.getElementById("p2NotReady").style.display="none";
         }else{
-            statusP2="Is Not Ready";
+           statusP2="Is Not Ready";
+           document.getElementById("p2Ready").style.display="none";   // change visibility of ready and not ready signs
+            document.getElementById("p2NotReady").style.display="inline-block";
         }
     }else{
         statusP2="Is Not Ready";
+        document.getElementById("p2Ready").style.display="none";   // change visibility of ready and not ready signs
+        document.getElementById("p2NotReady").style.display="inline-block";
     }
 
     if(yourRoom.player1){
         document.getElementById("player1").innerHTML = 
-        "Player 1: "+yourRoom.player1.name+
+        "Player 1: "+yourRoom.player1.name;/*+
         " Status: "+statusP1+
-        " SocketID: "+yourRoom.player1.socketID;
+        " SocketID: "+yourRoom.player1.socketID;*/
+        
     }else{
-        document.getElementById("player1").innerHTML = "Player 1: "
+        document.getElementById("player1").innerHTML = "Player 1: ";
+        
     }
     if(yourRoom.player2){
         document.getElementById("player2").innerHTML = 
-        "Player 2: "+yourRoom.player2.name+
+        "Player 2: "+yourRoom.player2.name;/*+
         " Status: "+statusP2+
-        " SocketID: "+yourRoom.player2.socketID;
+        " SocketID: "+yourRoom.player2.socketID;*/
+        
     }else{
-        document.getElementById("player2").innerHTML = "Player 2: "
+        document.getElementById("player2").innerHTML = "Player 2: ";
+        
     }
     lineWidth=yourRoom.lineWidth*canvasSide/1000;
     mainCtx.lineWidth=lineWidth;
@@ -226,9 +252,17 @@ function setPlayer(yourRoom){
         p2Color=yourRoom.player2.color;
     }
     if(playerSelf.isReady){
-        document.getElementById("playerReadyButton").style.backgroundColor="green";
+        //root.style.setProperty('--button-background', "rgba(255,158,0,1)");
+        //document.getElementById("playerReadyButton").style.backgroundColor="var(--grey)";
+        //document.getElementById("playerReadyButton").innerHTML="Your Ready!";
+        //document.getElementById("playerReadyButton").style.cursor="auto";
+        document.getElementById("playerReadyButton").style.display="none";
+    
     }else{
-        document.getElementById("playerReadyButton").style.backgroundColor="grey";
+        //document.getElementById("playerReadyButton").style.display="block";
+        document.getElementById("playerReadyButton").style.backgroundColor="var(--orange)";
+        document.getElementById("playerReadyButton").innerHTML="Ready";
+        document.getElementById("playerReadyButton").style.cursor="pointer";
     }
 
 }
@@ -271,11 +305,28 @@ socket.on("rejoinUpdate",(roomObject)=>{
     yourRoom=JSON.parse(roomObject); 
     setPlayer(yourRoom);
     setRoomInfo(yourRoom);
-    
+    drawPreviousPath(yourRoom,yourRoom.player1); // redraw p1 path
+    drawPreviousPath(yourRoom,yourRoom.player2); // redraw p2 path
     document.getElementById("playerReadyButton").style.display="none";
 });
 
-
+function drawPreviousPath(yourRoom,player){
+    
+   
+    var vBase = yourRoom.vBase; // kleinster abstand zwischen zwei punkten
+    mainCtx.strokeStyle = player.color;
+    for(var i=0;i<=player.x.length-2;i++){
+        mainCtx.beginPath();
+        
+        mainCtx.moveTo(player.x[i]*canvasSide/1000,player.y[i]*canvasSide/1000);
+        //distance between next point and x|y
+        var distanceSquared=(player.x[i]-player.x[i+1])*(player.x[i]-player.x[i+1])+(player.y[i]-player.y[i+1])*(player.y[i]-player.y[i+1]);
+        if( distanceSquared<3*vBase*vBase){// dann war dazwischen kein   unsichtbarer jump
+            mainCtx.lineTo(player.x[i+1]*canvasSide/1000,player.y[i+1]*canvasSide/1000);
+            mainCtx.stroke();
+        }
+    }
+}
 function playerIsReady(){
     
     socket.emit("playerIsReady","");
@@ -346,11 +397,11 @@ socket.on("winnerIs",(winner)=>{
     if(winner=="player1"){
         document.getElementById("winnerName").innerHTML=yourRoom.player1.name;
         document.getElementById("winnerName").style.color=yourRoom.player1.color;
-        document.getElementById("winner").style.display="block";
+        document.getElementById("winner").style.display="inline-block";
     }else{
         document.getElementById("winnerName").innerHTML=yourRoom.player2.name;
         document.getElementById("winnerName").style.color=yourRoom.player2.color;
-        document.getElementById("winner").style.display="block";
+        document.getElementById("winner").style.display="inline-block";
     }
 });
 

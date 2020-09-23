@@ -1,11 +1,54 @@
 
 
-body { padding: 0; margin: 0; }
-div {margin:0;}
+:root{
+    --button-background: rgba(255,158,0,1); 
+    --green: #3fc707; 
+    --grey: #221f1f; 
+    --orange:rgba(255,158,0,1);
 
-#mainCanvas{
-    background-color: grey;
+    --player1-color:red;
+    --player2-color:yellow;
+
+    --darkred:#c70714;
+    --darkgreen:#40940b;
 }
+p{
+    margin:0;
+}
+h1{
+    margin:0;
+}
+body{
+    background-color: var(--grey);
+    margin:0;
+    padding:0;
+    color:white;
+    font-family: sans-serif;
+}
+.inline{
+    display: inline;
+}
+.block{
+    display:block;
+}
+#canvasContainer{
+    position: relative;
+    display:flex;
+}
+#mainCanvas{
+    background-color: var(--grey);
+    border-bottom-style: solid;
+    border-width: 4px;
+    border-color: var(--green);
+}
+.canvasOverlayed{
+   
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+
 #playerReadyButton{
     display:none;
 }
@@ -14,55 +57,228 @@ div {margin:0;}
     font-family: sans-serif;
     text-align: right;
     font-size: 3rem;
-    color:orangered;
+    color:var(--orange);
 
     position:absolute;
     top:0;
     
     right:0;
-    margin-right:10%;
-    margin-top:10%;
+    margin-right:5%;
+    margin-top:5%;
 }
 #reJoinCountDown{
-    display:none;
+    color:var(--orange);
 }
 #resumeCountdown{
-    color:green;
+    color:var(--green);
 }
 #winner{
     display:none;
+    font-size: 1.5rem;
+    padding:0.5rem;
+    margin: 1rem;
 }
-.canvasOverlayed{
-   
+
+button{
     position: absolute;
-    top:0;
-    left:0;
+    margin:1.5rem;
+    right:0;
+    bottom:0;
+    
+    cursor: pointer;
+    background-color: var(--button-background);
+    color:white;
+    font-size: 1.5rem;
+    line-height: 2rem;;
+    border-color: grey;
+    border-style: solid;
+    border-radius: 0.5rem;
+    padding:0.5rem;
 }
-#canvasContainer{
-    position: relative;
-    display:flex;
+button:focus{
+    outline-width: 0;
 }
+
+
+
 #mobileControl{
+    
     position: relative;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    
+    
 }
 #leftControl{
-    position:absolute;
-    left:0;
-    top:0;
+    /*border-top-right-radius: 1rem;*/
+    border-bottom-right-radius: 1rem;
+    padding:0.5rem;
+    padding-left:2rem;
+    padding-right:2rem;
+}
+.margin1Rem{
+    margin: 1rem;
 }
 #rightControl{
-    position:absolute;
-    right:0;
-    top:0;
+   /* border-top-left-radius: 1rem;*/
+    border-bottom-left-radius: 1rem;
+    padding:0.5rem;
+    padding-left:2rem;
+    padding-right:2rem;
 }
 .controlButton{
-    background-color: orangered;
+    background-color: var(--orange);
 }
-.controlButton:hover{
-    background-color: red;
+
+.playerRow{
+    margin-top:1.5rem;
+    margin-left: 1rem;
+    display: inline-block;
 }
+.player{
+    border-radius:1rem;
+    font-size:1rem;
+    line-height: 2rem;
+    padding:0.5rem;
+}
+#roomWrapper{
+    margin:0.5rem;
+    position:fixed;
+        bottom:0;
+        right:0;
+}
+#room{
+    
+    display:inline;
+    background-color: var(--green);
+    line-height: 1.3rem;
+    font-size: 1rem;
+    padding:0.2rem;
+    border-radius: 0.2rem;
+}
+#player1{
+    background-color: var(--player1-color);
+}
+#player2{
+    background-color: var(--player2-color);
+    color:black;
+}
+.status{
+    display: inline-block;
+    color:white;
+    line-height: 1rem;
+    width:1rem;
+    font-size: 1rem;
+    padding:0.3rem;
+    text-align: center;
+    border-radius: 50%;
+    margin:0;
+    margin-left:-0.7rem; /*margin to overlay name and status*/
+    
+}
+.ready{
+    display:none;
+    background-color: var(--darkgreen);
+}
+.notReady{
+    background-color: var(--darkred);
+}
+
 @media only screen and (min-width: 600px) {
     #mobileControl{
        display:none;
+    }
+    canvas{
+        margin:5%;
+        border-style: solid;
+        border-width: 4px;
+        border-color: var(--green);
+
+    }
+    #mainCanvas{
+        background:rgba(0,0,0,0);
+        -webkit-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+    }
+    .canvasOverlayed{
+       
+        position: absolute;
+        top:0;
+        left:0;
+    }
+    #canvasContainer{
+        position: relative;
+        display:flex;
+    }
+    #roomWrapper{
+        margin:0.5rem;
+        position:fixed;
+        top:0;
+        right:0;
+        left:unset;
+    }
+    button{
+        position: absolute;
+        margin:8%;
+        left:0;
+        top:0;
+        bottom:unset;
+        cursor: pointer;
+        background-color: var(--button-background);
+        color:white;
+        font-size: 1.5rem;
+        line-height: 2rem;;
+        border-color: grey;
+        border-style: solid;
+        border-radius: 0.5rem;
+        padding:0.5rem;
+    }
+    #p1Orga{
+        position: absolute;
+       
+        margin:2rem;
+        margin-left:0;
+        bottom:0;
+        left:5%;
+    }
+    #p2Orga{
+        position: absolute;
+        margin:2rem;
+        bottom:0;
+        left:20rem;
+    }
+    .countDown{
+        display:none;
+        font-family: sans-serif;
+        text-align: left;
+        font-size: 3rem;
+        color:var(--orange);
+    
+        position:absolute;
+        top:0;
+        
+        left:0;
+        margin-left:7%;
+        margin-top:7%;
+    }
+    #winner{
+        font-size: 3rem;;
+        display:none;
+        position: absolute;
+        margin:7%;
+        left:0;
+        top:0;
+        padding:1rem;
+       
+        background-color: var(--grey);
+        border-radius: 0.3rem;
+        border-color: var(--orange);
+        border-style: solid;
+        border-width: 2px;
+        -webkit-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
     }
 }

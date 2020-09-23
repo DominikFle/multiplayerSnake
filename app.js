@@ -6,8 +6,9 @@ const express = require("express");
 
 
 const app = express();
-const hostname = '0.0.0.0'; //const hostname = "127.0.0.1";https://achtung.herokuapp.com/
-const port = process.env.PORT || 80;   //3000
+//const hostname = '0.0.0.0'; 
+const hostname = "127.0.0.1";//https://achtung.herokuapp.com/
+const port = process.env.PORT || 3000;   //3000
 
 
 app.use(express.static(__dirname + '/public'));  //öffentlichen Zugang zu Ordner erlauben
@@ -26,7 +27,7 @@ app.get('/',(req,res)=>{
 
 
 
-var server = app.listen(port);  // call back und hostname optional und port
+var server = app.listen(port,hostname);  // call back und hostname optional und port
 var io = require('socket.io').listen(server);   // socket io mit express app verbinden
 
 var gameRooms={};   // objekt mit alle gamerooms drinne
@@ -97,6 +98,13 @@ function Player(name,socketID){
         }
         if(crashed){
             gameRoom.gameIsOver=true;
+            if(gameRoom.player1){
+                gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+            }
+            
+            if(gameRoom.player2){
+                gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+            }
             if(gameRoom.player1==this){  // wenn crashtest von player 1 gemacht wurde dann hat player 2 gewonnen
                 io.to(gameRoom.IORoomName).emit("winnerIs","player2");
                 
@@ -132,6 +140,13 @@ function Player(name,socketID){
         }
         if(crashed){
             gameRoom.gameIsOver=true;
+            if(gameRoom.player1){
+                gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+            }
+            
+            if(gameRoom.player2){
+                gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+            }
             if(gameRoom.player1==this){  // wenn crashtest von player 1 gemacht wurde dann hat player 2 gewonnen
                 io.to(gameRoom.IORoomName).emit("winnerIs","player2");
                 
@@ -148,6 +163,7 @@ function Player(name,socketID){
 //-----------GameRoom creator--------------
 
 function GameRoom(player1,socketRoomIndex){
+    this.vBase = vBase;
     this.player1=player1;
     this.player2;
     this.playerList=[];
@@ -282,12 +298,28 @@ function GameRoom(player1,socketRoomIndex){
         if(this.player1.x[this.player1.x.length-1]+lineWidth/2>w||this.player1.x[this.player1.x.length-1]-lineWidth/2<0||
             this.player1.y[this.player1.y.length-1]+lineWidth/2>h||this.player1.y[this.player1.y.length-1]-lineWidth/2<0){  // if x or y is out of canvas
                 this.gameIsOver=true;
+                if(this.player1){
+                    this.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
+                
+                if(this.player2){
+                    this.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
                 io.to(this.IORoomName).emit("winnerIs","player2");
+                this.gameIsOver=true;
         }
         if(this.player2.x[this.player2.x.length-1]+lineWidth/2>w||this.player2.x[this.player2.x.length-1]-lineWidth/2<0||
             this.player2.y[this.player2.y.length-1]+lineWidth/2>h||this.player2.y[this.player2.y.length-1]-lineWidth/2<0){  // if x or y is out of canvas
                 this.gameIsOver=true;
+                if(this.player1){
+                    this.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
+                
+                if(this.player2){
+                    this.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
                 io.to(this.IORoomName).emit("winnerIs","player1"); // if player 1 crahses player 2 is the winner
+                this.gameIsOver=true;
         }
     }
 
@@ -347,6 +379,13 @@ function GameRoom(player1,socketRoomIndex){
                     io.to(gameRoom.IORoomName).emit("winnerIs","player1");
                 }
                 this.gameIsOver=true;
+                if(gameRoom.player1){
+                    gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
+                
+                if(gameRoom.player2){
+                    gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
                 
             }
         }
@@ -389,6 +428,8 @@ io.sockets.on('connection', function (socket) {
         lastRoomIndex++;
         var newRoom = new GameRoom(player,lastRoomIndex);
         newRoom.openGameRoomsIndex=openGameRooms.push(newRoom)-1;
+        console.log("openGameRooms after Creation");
+        console.log(openGameRooms);
         IORoomName="Room"+lastRoomIndex;
 
         gameRooms[IORoomName]=newRoom;  // add object key to var in square brackets
@@ -401,6 +442,7 @@ io.sockets.on('connection', function (socket) {
 
         socket.join(IORoomName);   // join the socketio room
         io.to(player.socketID).emit("roomJoined",JSON.stringify(newRoom));   // send the response back to the joined socket
+        console.log(gameRooms)
     }
 
     //------
@@ -409,6 +451,7 @@ io.sockets.on('connection', function (socket) {
         if(openRoom.player1){   // abfrage welcher player slot belegt ist und dann den neuen player in anderen slot
             openRoom.player2=player;                       // create gameRoom Player links
         }else{
+
             openRoom.player1=player;
         }
         
@@ -418,6 +461,16 @@ io.sockets.on('connection', function (socket) {
 
         socket.join(openRoom.IORoomName);
         io.to(openRoom.IORoomName).emit("roomReady",JSON.stringify(openRoom)); // send roomReady event
+
+        console.log("OpenRooms:")
+        console.log(openGameRooms);
+
+        console.log("GameRooms");
+        console.log(gameRooms);
+        console.log("palyers");
+        console.log(players);
+        console.log("this gameRoom");
+        console.log(socket.gameRoom);
     }
 
 
@@ -451,7 +504,7 @@ io.sockets.on('connection', function (socket) {
             
             gameRoom.resumeTimer(3);
 
-        }else{ // Neu gejoint---------------------------------------------------- 
+        }else if(playerInfo.playerName){ // Neu gejoint---------------------------------------------------- 
             playerObject=new Player(playerInfo.playerName,socket.id)
             playerObject.playersIndex=players.push(playerObject)-1;   // get Index of player in players array
     
@@ -460,10 +513,16 @@ io.sockets.on('connection', function (socket) {
     
             //if open Rooms available take open rooms
             console.log(openGameRooms.length);
+            console.log("can decide rooms when open game rooms is:");
+            console.log(openGameRooms)
             if(openGameRooms.length>0){
+                console.log("will join OpenGame");
+                console.log(openGameRooms)
                 joinOpenRoom(playerObject);
+                console.log("joinedOpenGame");
             }else{
                 createGameRoom(playerObject);
+                console.log("gameWasCreated");
             }
         }
         
@@ -489,8 +548,11 @@ io.sockets.on('connection', function (socket) {
     //--------------delete Game
     function deleteGameRoom(gameRoom){
         delete gameRooms[gameRoom.IORoomName];
-        if(gameRoom.openGameRoomsIndex){
-            openGameRooms.splice(gameRoom.openGameRoomsIndex,1); // delete element from open rooms if open
+        if(gameRoom.openGameRoomsIndex==0||gameRoom.openGameRoomsIndex){
+            if(openGameRooms[gameRoom.openGameRoomsIndex]==gameRoom){ // double check ob das noch der gameroom ist 
+                openGameRooms.splice(gameRoom.openGameRoomsIndex,1); // delete element from open rooms if open
+            }
+            
         }
        
         if(gameRoom.gameStarted){
@@ -510,8 +572,13 @@ io.sockets.on('connection', function (socket) {
         if((!socket.gameRoom.gameStarted&&!socket.gameRoom.gameIsOver&&!socket.gameRoom.gameIsPaused)){ // wenn game noch nicht gestarted .. einfach leaven
             if(socket.gameRoom.getNumberOfPlayers()==2){ // es waren zwei spieler im raum
                 var gameRoom= socket.gameRoom;
-                gameRoom.player1.isReady=false;
-                gameRoom.player2.isReady=false;
+                if(socket.gameRoom.player1){
+                    socket.gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
+                
+                if(socket.gameRoom.player2){
+                    socket.gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+                }
                 deletePlayer(socket.player);
                 gameRoom.openGameRoomsIndex=openGameRooms.push(gameRoom)-1; // push room to open rooms and list its index there
                 
