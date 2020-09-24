@@ -10,25 +10,25 @@ document.getElementById("reload").addEventListener("click",()=>{
 });
 
 document.getElementById("playerReadyButton").addEventListener("click",playerIsReady);
-document.getElementById("leftControl").addEventListener("mousedown",()=>{   // emulate left arrow  mousedown = touchstart
+document.getElementById("leftControl").addEventListener("touchstart",()=>{   // emulate left arrow  mousedown = touchstart
     if(!leftArrowDown){
         leftArrowDown=true;
         sendInputUpdate(); 
     }
 });
-document.getElementById("rightControl").addEventListener("mousedown",()=>{ // emulate right arrow  mousedown = touchstart
+document.getElementById("rightControl").addEventListener("touchstart",()=>{ // emulate right arrow  mousedown = touchstart
     if(!rightArrowDown){
         rightArrowDown=true;
         sendInputUpdate(); 
     }
 });
-document.getElementById("leftControl").addEventListener("mouseup",()=>{ // emulate left arrow  mouseup = touchend
+document.getElementById("leftControl").addEventListener("touchend",()=>{ // emulate left arrow  mouseup = touchend
     
         leftArrowDown=false;
         sendInputUpdate(); 
     
 });
-document.getElementById("rightControl").addEventListener("mouseup",()=>{ // emulate right arrow  mouseup = touchend
+document.getElementById("rightControl").addEventListener("touchend",()=>{ // emulate right arrow  mouseup = touchend
     
         leftArrowDown=true;
         sendInputUpdate(); 
