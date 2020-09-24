@@ -162,7 +162,7 @@ socket.on("connect",()=>{
 
         socket.emit("playerJoinRequest",JSON.stringify(playerInfo));            // emit gameRoom request
     }else{
-       window.location.href= indexLink;
+       //window.location.href= indexLink;
     }
    
 })
