@@ -32,7 +32,7 @@ document.getElementById("leftControl").addEventListener("touchend",(e)=>{ // emu
 });
 document.getElementById("rightControl").addEventListener("touchend",(e)=>{ // emulate right arrow  mouseup = touchend
     e.preventDefault();
-        leftArrowDown=true;
+        rightArrowDown=false;
         sendInputUpdate(); 
     
 });
