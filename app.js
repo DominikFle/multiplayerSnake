@@ -6,8 +6,8 @@ const express = require("express");
 
 
 const app = express();
-//const hostname = '0.0.0.0'; 
-const hostname = "127.0.0.1";//https://achtung.herokuapp.com/
+const hostname = '0.0.0.0'; 
+//const hostname = "127.0.0.1";//https://achtung.herokuapp.com/          127.0.0.1
 const port = process.env.PORT || 3000;   //3000
 
 
