@@ -2,7 +2,7 @@
 var indexLink="https://achtung.herokuapp.com/";//http://localhost:3000
 var socket;
 document.addEventListener("load",()=>{
-    socket = io();//------------------------------load socket io on poageload
+    
     if(!sessionStorage.getItem("playerName")){
         window.location.href= indexLink; //heroku
     }
@@ -137,11 +137,11 @@ function startCountDown(){
     },3400);
 }
 //----------------------------SocketIO-----------------------------------
-//var socket = io(); socket io is loaded on page load
+var socket = io(); 
 
 socket.on("connect",()=>{
     
-    playerName = sessionStorage.getItem("playerName");
+    var playerName = sessionStorage.getItem("playerName");
     if(playerName){ // nur wenn name angegeben darf man connecten
         // document.getElementById("selfPlayer").innerHTML = "Player name: "+sessionStorage.getItem("playerName")+
         //"  PlayerID: "+ socket.id;                           // get the session storage player Info
