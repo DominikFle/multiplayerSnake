@@ -569,55 +569,58 @@ io.sockets.on('connection', function (socket) {
     socket.on("disconnect",(reason)=>{
 
             console.log("Disconnetct: "+socket.id +reason);
-        if((!socket.gameRoom.gameStarted&&!socket.gameRoom.gameIsOver&&!socket.gameRoom.gameIsPaused)){ // wenn game noch nicht gestarted .. einfach leaven
-            if(socket.gameRoom.getNumberOfPlayers()==2){ // es waren zwei spieler im raum
-                var gameRoom= socket.gameRoom;
-                if(socket.gameRoom.player1){
-                    socket.gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
-                }
-                
-                if(socket.gameRoom.player2){
-                    socket.gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
-                }
-                deletePlayer(socket.player);
-                gameRoom.openGameRoomsIndex=openGameRooms.push(gameRoom)-1; // push room to open rooms and list its index there
-                
-                
-                // send event--------------------
-                io.to(gameRoom.IORoomName).emit("playerDisconnect",JSON.stringify(gameRoom));
-    
-                gameRoom=undefined; // delete helper var
-            }else{
-                var player = socket.player;             // letzter spieler verlässt den raum
-                var gameRoom = socket.gameRoom;
-                deletePlayer(socket.player);
-                deleteGameRoom(gameRoom);
-    
-                player=undefined;   // delete helper vars
-                gameRoom=undefined;
-                // send event aber das kommt nirgendwo an also ok ohne event
-            }
-        }else if(socket.gameRoom.gameIsOver||socket.gameRoom.getNumberOfPlayers()==1){
-            var gameRoom=socket.gameRoom;
-            deletePlayer(gameRoom.player);
-           
-            deleteGameRoom(gameRoom);
-            gameRoom=undefined;
-
-        }else{
-            socket.gameRoom.gameIsPaused=true;
-            socket.gameRoom.isWaitingForRejoin=true;
-            recentlyDisconnectedPlayers[socket.id]=socket.gameRoom;
-            socket.gameRoom.waitingForRejoin(socket.player,socket.gameRoom,Math.floor(reJoinDelay/1000));
-            setTimeout(()=>{
-                if(recentlyDisconnectedPlayers[socket.id]){  // erst suchen eventuell schon gelöscht wegen reconnect
-                    delete recentlyDisconnectedPlayers[socket.id];
+        if(socket.gameRoom){ // das ganze nur machen wenn der überhaupt nen gameRoom hat
+            if((!socket.gameRoom.gameStarted&&!socket.gameRoom.gameIsOver&&!socket.gameRoom.gameIsPaused)){ // wenn game noch nicht gestarted .. einfach leaven
+                if(socket.gameRoom.getNumberOfPlayers()==2){ // es waren zwei spieler im raum
+                    var gameRoom= socket.gameRoom;
+                    if(socket.gameRoom.player1){
+                        socket.gameRoom.player1.isReady=false;  // wenn gecrasht nichtmehr ready
+                    }
+                    
+                    if(socket.gameRoom.player2){
+                        socket.gameRoom.player2.isReady=false;  // wenn gecrasht nichtmehr ready
+                    }
                     deletePlayer(socket.player);
+                    gameRoom.openGameRoomsIndex=openGameRooms.push(gameRoom)-1; // push room to open rooms and list its index there
+                    
+                    
+                    // send event--------------------
+                    io.to(gameRoom.IORoomName).emit("playerDisconnect",JSON.stringify(gameRoom));
+        
+                    gameRoom=undefined; // delete helper var
+                }else{
+                    var player = socket.player;             // letzter spieler verlässt den raum
+                    var gameRoom = socket.gameRoom;
+                    deletePlayer(socket.player);
+                    deleteGameRoom(gameRoom);
+        
+                    player=undefined;   // delete helper vars
+                    gameRoom=undefined;
+                    // send event aber das kommt nirgendwo an also ok ohne event
                 }
+            }else if(socket.gameRoom.gameIsOver||socket.gameRoom.getNumberOfPlayers()==1){
+                var gameRoom=socket.gameRoom;
+                deletePlayer(gameRoom.player);
                
-            },reJoinDelay)                                           // nach reJoinDelay den eintrag wieder entfernen
-
+                deleteGameRoom(gameRoom);
+                gameRoom=undefined;
+    
+            }else{
+                socket.gameRoom.gameIsPaused=true;
+                socket.gameRoom.isWaitingForRejoin=true;
+                recentlyDisconnectedPlayers[socket.id]=socket.gameRoom;
+                socket.gameRoom.waitingForRejoin(socket.player,socket.gameRoom,Math.floor(reJoinDelay/1000));
+                setTimeout(()=>{
+                    if(recentlyDisconnectedPlayers[socket.id]){  // erst suchen eventuell schon gelöscht wegen reconnect
+                        delete recentlyDisconnectedPlayers[socket.id];
+                        deletePlayer(socket.player);
+                    }
+                   
+                },reJoinDelay)                                           // nach reJoinDelay den eintrag wieder entfernen
+    
+            }
         }
+        
         
         
     });

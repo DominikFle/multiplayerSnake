@@ -17,6 +17,29 @@
     <input type="text" class="noSelect" id="playerName" placeholder="Name" name ="playerName" spellcheck="false">
     <button id="joinGameButton">Join Game</button>
     <p id="nameError">Your Name has to be more than three characters!</p>
+    <div id="expl">
+        <div class="explRow" id="steer">
+            <canvas class="explCanvas" id="steerCanvas"></canvas>
+            <div class="explanation">Steer using the arrow keys: 
+                <span class="arrow" id="leftArrow">←</span> and <span class="arrow" id="rightArrow">→</span></div>
+        </div>
+        <div class="explRow" id="wallCrash">
+            <canvas class="explCanvas" id="wallCrashCanvas"></canvas>
+            <div class="explanation">Don't crash into the Wall !</div>
+        </div>
+        <div class="explRow" id="selfCrash">
+            <canvas class="explCanvas" id="selfCrashCanvas"></canvas>
+            <div class="explanation">Don't crash into yourself !</div>
+        </div>
+        <div class="explRow" id="opponentCrash">
+            <canvas class="explCanvas" id="opponentCrashCanvas"></canvas>
+            <div class="explanation">Don't crash into your opponent !</div>
+        </div>
+        
+        
+      
+       
+    </div>
 
     
     

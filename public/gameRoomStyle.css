@@ -80,20 +80,27 @@ body{
 }
 
 button{
+    all: unset;
     position: absolute;
-    margin:1.5rem;
-    right:0;
-    bottom:0;
+    margin:5%;
+    top:0;
+    left:0;
     
     cursor: pointer;
     background-color: var(--button-background);
     color:white;
-    font-size: 1.5rem;
-    line-height: 2rem;;
-    border-color: grey;
-    border-style: solid;
-    border-radius: 0.5rem;
-    padding:0.5rem;
+    
+    line-height: 4rem;
+    width:4rem;
+    font-size: 1rem;
+    
+    text-align: center;
+    
+    border-radius: 50%;
+    background-color: var(--orange);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 button:focus{
     outline-width: 0;
@@ -185,6 +192,27 @@ button:focus{
     background-color: var(--darkred);
 }
 
+#reload{
+    display:none;
+    cursor: pointer;
+    
+}
+#replay{
+    position: absolute;
+    width:10%;
+    height:auto;
+    top:0;
+    left:0;
+    margin:5%;
+    padding:3%;
+    border-radius: 50%;
+    background-color: var(--orange);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    
+}
+
 @media only screen and (min-width: 600px) {
     #mobileControl{
        display:none;
@@ -234,6 +262,7 @@ button:focus{
         border-style: solid;
         border-radius: 0.5rem;
         padding:0.5rem;
+        box-shadow: none;
     }
     #p1Orga{
         position: absolute;
@@ -277,8 +306,28 @@ button:focus{
         border-color: var(--orange);
         border-style: solid;
         border-width: 2px;
-        -webkit-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
-box-shadow: 6px 6px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: none;
+    }
+    #reload{
+        display:none;
+        cursor: pointer;
+        background-color: rgba(0,0,0,0);
+    }
+    #replay{
+        position: absolute;
+        width:4%;
+        height:auto;
+        top:0;
+        left:0;
+        margin:1%;
+        transition-duration: 0.8s;
+        transition-property: transform;
+        background-color: rgba(0,0,0,0);
+        box-shadow: none;
+        padding:0;
+    }
+    #replay:hover{
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
     }
 }

@@ -1,9 +1,12 @@
 //---------------------------------Event Listener-----------------------------------
-var indexLink="http://localhost:3000/gameRoom.html"
+var indexLink="http://localhost:3000";
 document.addEventListener("load",()=>{
     if(!sessionStorage.getItem("playerName")){
         window.location.href= indexLink; //heroku
     }
+});
+document.getElementById("reload").addEventListener("click",()=>{
+    window.location.reload(true);
 });
 
 document.getElementById("playerReadyButton").addEventListener("click",playerIsReady);
@@ -238,7 +241,12 @@ function setPlayer(yourRoom){
         mainCtx.moveTo(p1.xCurrent*canvasSide/1000,p1.yCurrent*canvasSide/1000);   // scale the points with the respective canvas width
         mainCtx.lineTo(p1.xCurrent*canvasSide/1000,p1.yCurrent*canvasSide/1000);
         mainCtx.stroke(); 
-        console.log("hi vom malen p1");
+        //console.log("hi vom malen p1");↑
+        var fontSize=canvasSide/30;
+        mainCtx.font = fontSize+"px Arial";
+        mainCtx.fillStyle="grey";
+        mainCtx.textAlign = "center";
+        mainCtx.fillText("↑", p1.xCurrent*canvasSide/1000, p1.yCurrent*canvasSide/1000-canvasSide/25);
         p1Color=yourRoom.player1.color;
     }
     if(yourRoom.player2&&!p2StartDrawn){// draw initial canvas pos
@@ -248,7 +256,12 @@ function setPlayer(yourRoom){
         mainCtx.moveTo(p2.xCurrent*canvasSide/1000,p2.yCurrent*canvasSide/1000);
         mainCtx.lineTo(p2.xCurrent*canvasSide/1000,p2.yCurrent*canvasSide/1000);
         mainCtx.stroke(); 
-        console.log("hi vom malen p2");
+        var fontSize=canvasSide/30;
+        mainCtx.font = fontSize+"px Arial";
+        mainCtx.fillStyle="grey";
+        mainCtx.textAlign = "center";
+        mainCtx.fillText("↑", p2.xCurrent*canvasSide/1000, p2.yCurrent*canvasSide/1000-canvasSide/25);
+        //console.log("hi vom malen p2");
         p2Color=yourRoom.player2.color;
     }
     if(playerSelf.isReady){
@@ -394,6 +407,7 @@ socket.on("pleaseDraw",(coordsObjectString)=>{
 
 socket.on("winnerIs",(winner)=>{
    // console.log("clientWinner"+winner);
+   document.getElementById("reload").style.display="block";
     if(winner=="player1"){
         document.getElementById("winnerName").innerHTML=yourRoom.player1.name;
         document.getElementById("winnerName").style.color=yourRoom.player1.color;
