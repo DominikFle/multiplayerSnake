@@ -10,26 +10,28 @@ document.getElementById("reload").addEventListener("click",()=>{
 });
 
 document.getElementById("playerReadyButton").addEventListener("click",playerIsReady);
-document.getElementById("leftControl").addEventListener("touchstart",()=>{   // emulate left arrow  mousedown = touchstart
+document.getElementById("leftControl").addEventListener("touchstart",(e)=>{   // emulate left arrow  mousedown = touchstart
+    e.preventDefault();
     if(!leftArrowDown){
         leftArrowDown=true;
         sendInputUpdate(); 
     }
 });
-document.getElementById("rightControl").addEventListener("touchstart",()=>{ // emulate right arrow  mousedown = touchstart
+document.getElementById("rightControl").addEventListener("touchstart",(e)=>{ // emulate right arrow  mousedown = touchstart
+    e.preventDefault();
     if(!rightArrowDown){
         rightArrowDown=true;
         sendInputUpdate(); 
     }
 });
-document.getElementById("leftControl").addEventListener("touchend",()=>{ // emulate left arrow  mouseup = touchend
-    
+document.getElementById("leftControl").addEventListener("touchend",(e)=>{ // emulate left arrow  mouseup = touchend
+    e.preventDefault();
         leftArrowDown=false;
         sendInputUpdate(); 
     
 });
-document.getElementById("rightControl").addEventListener("touchend",()=>{ // emulate right arrow  mouseup = touchend
-    
+document.getElementById("rightControl").addEventListener("touchend",(e)=>{ // emulate right arrow  mouseup = touchend
+    e.preventDefault();
         leftArrowDown=true;
         sendInputUpdate(); 
     
