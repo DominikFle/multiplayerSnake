@@ -2,7 +2,7 @@
 var indexLink="https://achtung.herokuapp.com/";//http://localhost:3000
 document.addEventListener("load",()=>{
     if(!sessionStorage.getItem("playerName")){
-        window.location.href= indexLink; //heroku
+        //window.location.href= indexLink; //heroku
     }
 });
 document.getElementById("reload").addEventListener("click",()=>{
