@@ -1,3 +1,9 @@
+//Check if sessionStorage works
+sessionStorage.setItem("test", "testValue");
+if(!sessionStorage.getItem("test")=="testValue"){
+    window.location.reload(true);
+}
+
 //---------------------------------Event Listener-----------------------------------
 
 document.getElementById("joinGameButton").addEventListener("click",gameJoinProcess);
