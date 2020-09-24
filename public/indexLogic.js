@@ -38,6 +38,7 @@ function nameCheck(){                                               // check if 
     var playerName=document.getElementById("playerName").value;
     console.log("hi");
     if(playerName.length>=3){
+        sessionStorage.setItem("playerName", playerName);
         root.style.setProperty('--button-background', "rgba(255,158,0,1)");
         document.getElementById("joinGameButton").style.cursor="pointer";
         allowedToJoin=true;
