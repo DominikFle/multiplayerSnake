@@ -1,6 +1,8 @@
 //---------------------------------Event Listener-----------------------------------
 var indexLink="https://achtung.herokuapp.com/";//http://localhost:3000
+var socket;
 document.addEventListener("load",()=>{
+    socket = io();//------------------------------load socket io on poageload
     if(!sessionStorage.getItem("playerName")){
         window.location.href= indexLink; //heroku
     }
@@ -135,7 +137,7 @@ function startCountDown(){
     },3400);
 }
 //----------------------------SocketIO-----------------------------------
-var socket = io();
+//var socket = io(); socket io is loaded on page load
 
 socket.on("connect",()=>{
     
@@ -160,7 +162,7 @@ socket.on("connect",()=>{
 
         socket.emit("playerJoinRequest",JSON.stringify(playerInfo));            // emit gameRoom request
     }else{
-       // window.location.href= indexLink;
+       window.location.href= indexLink;
     }
    
 })
