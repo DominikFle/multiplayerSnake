@@ -19,7 +19,7 @@ var errorIsShown=false;
 let root = document.documentElement; // for variable css styles
 function gameJoinProcess(){
     // Store name in session
-  
+    nameCheck();
     if(allowedToJoin){
         var playerName=document.getElementById("playerName").value;
         sessionStorage.setItem("playerName", playerName);
