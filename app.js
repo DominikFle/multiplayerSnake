@@ -245,7 +245,7 @@ function GameRoom(player1,socketRoomIndex){
                 
             
             //collisionChecks
-            this.collisionCheckWall();  // gameroom checkt collision von p1 und p2
+            //this.collisionCheckWall();  // gameroom checkt collision von p1 und p2
 
             this.player1.selfCollisionCheck(this); // player slebst checken collsion mit sich und anderen
             this.player2.selfCollisionCheck(this);
