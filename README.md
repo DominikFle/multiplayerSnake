@@ -1,5 +1,5 @@
 # multiplayerSnake
-Multiplayer Snake game using nodeJS and websockets.
+Multiplayer Snake game using NodeJS and Websockets.
 
 The prototype game can be played on 
 [Heroku](http://achtung.herokuapp.com/).
